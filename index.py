@@ -13,7 +13,6 @@ unsafe_locations = []
 queen_locations  = []
 safe_locations   = []
 
-
 # Function declarations
 
 # Clears the console
@@ -52,7 +51,7 @@ def set_unsafe_locations(input_queen):
 
     diagonal_y = input_queen.y - input_queen.x 
     diagonal_x = input_queen.x + input_queen.y 
-    
+
     for coordinate in range(board_dimensions): 
         temp_point_one = Point(coordinate, diagonal_y)
         temp_point_two = Point(diagonal_x, coordinate)
@@ -74,7 +73,8 @@ def set_safe_locations():
                 safe_locations.append(temp_point) 
 
 # Shrinks the safe_locations array based on new queen placement 
-def shrink_safe_locations(): 
+def shrink_safe_locations():
+ 
     for x in range(board_dimensions): 
         for y in range(board_dimensions): 
             temp_point = Point(x, y) 
@@ -83,12 +83,10 @@ def shrink_safe_locations():
 
 # Initializes the board with the given queen coordinate 
 def place_queen(input_queen): 
-    # print("Appending Queen: ({0}, {1})".format(input_queen.x, input_queen.y))
     queen_locations.append(input_queen) 
     unsafe_locations.append(input_queen) 
     set_unsafe_locations(input_queen)
     set_safe_locations()
-    # print("Safe Locations : {0}".format(safe_locations)) 
 
 # Resets all arrays to initial settings 
 def reset_board(): 
@@ -105,20 +103,15 @@ def is_valid():
     if len(queen_locations) == 8: 
         return True 
     elif len(queen_locations) > 8 or len(queen_locations) < 0: 
-        print("Number of queens exceeds the maximum  or minimum number allowed")
-        raise 
+        raise Exception("Number of queens exceeds the maximum  or minimum number allowed") 
     else: 
         return False
         
 # Main 
 try: 
 
-    display_board() 
-
-    print("Enter x coordinate:", end = ' ') 
-    input_x = int(input())
-    print("Enter y coordinate:", end = ' ')
-    input_y = int(input()) 
+    input_x = int(input("Enter x coordinate: "))
+    input_y = int(input("Enter y coordinate: ")) 
     initial_queen = Point(input_x, input_y)
 
     place_queen(initial_queen) 
@@ -134,7 +127,6 @@ try:
         while len(safe_locations) > 0: 
             for locations in safe_locations:
                 if not is_valid(): 
-                    # display_board()
                     place_queen(locations)
                 else: 
                     break 
