@@ -57,14 +57,14 @@ def set_unsafe_locations(input_queen):
 
     for x in range(board_dimensions): 
         temp_point = Point(x, diagonal_y)
-        if temp_point not in queen_locations and temp_point.x in range(0, board_dimensions) and temp_point.y in range(0, board_dimensions):
+        if temp_point.x in range(0, board_dimensions) and temp_point.y in range(0, board_dimensions):
             unsafe_locations.append(temp_point)
         diagonal_y += 1 
     
     diagonal_x = input_queen.x + input_queen.y 
     for y in range(board_dimensions): 
         temp_point = Point(diagonal_x, y)
-        if temp_point not in queen_locations and temp_point.x in range(0, board_dimensions) and temp_point.y in range(0, board_dimensions):
+        if temp_point.x in range(0, board_dimensions) and temp_point.y in range(0, board_dimensions):
             unsafe_locations.append(temp_point)
         diagonal_x -= 1
 
@@ -90,15 +90,15 @@ def shrink_safe_locations():
 
 # Initializes the board with the given queen coordinate 
 def place_queen(input_queen): 
-    print("Appending Queen: ({0}, {1})".format(input_queen.x, input_queen.y))
+    # print("Appending Queen: ({0}, {1})".format(input_queen.x, input_queen.y))
     queen_locations.append(input_queen) 
     unsafe_locations.append(input_queen) 
     set_unsafe_locations(input_queen)
     set_safe_locations()
-    print("Safe Locations : {0}".format(safe_locations)) 
+    # print("Safe Locations : {0}".format(safe_locations)) 
 
 # Resets all arrays to initial settings 
-def reset_arrays(): 
+def reset_board(): 
     init_queen = queen_locations[0] 
     queen_locations.clear() 
     unsafe_locations.clear() 
@@ -109,15 +109,14 @@ def reset_arrays():
 # Previous functions bind the queens by safe locations on the board.
 # Thus, the validity of the board can be confirmed by checking the number of queens.
 def is_valid(): 
-    if len(queen_locations) == 7: 
+    if len(queen_locations) == 8: 
         return True 
-    elif len(queen_locations) > 7 or len(queen_locations) < 0: 
+    elif len(queen_locations) > 8 or len(queen_locations) < 0: 
         print("Number of queens exceeds the maximum  or minimum number allowed")
         raise 
     else: 
         return False
-    
-
+        
 # Main 
 try: 
 
@@ -131,25 +130,32 @@ try:
 
     place_queen(initial_queen) 
 
-    display_board() 
+    current_place = 0
 
-    # double for loop iteration
+    while True: 
+  
+        if current_place > 0:
+            for places in range(current_place):
+                safe_locations.remove(safe_locations[0])
 
-    place_queen(safe_locations[1])
+        while len(safe_locations) > 0: 
+            for locations in safe_locations:
+                if not is_valid(): 
+                    # display_board()
+                    place_queen(locations)
+                else: 
+                    break 
 
-    display_board() 
+        if is_valid(): 
+            break 
+        reset_board()
+        current_place += 1
 
-    place_queen(safe_locations[0])
-
-    display_board() 
-
-    place_queen(safe_locations[0])
-    
-    display_board() 
-
-    place_queen(safe_locations[0]) 
-
-    display_board() 
+    if not is_valid(): 
+        raise Exception("No Solution")
+    else: 
+        print("\nFound Solution:")
+        display_board()
 
 except Exception as e: 
     print("Error: {0}".format(e))
