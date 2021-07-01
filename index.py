@@ -36,8 +36,8 @@ def display_board():
             if temp_point in queen_locations: 
                 print('Q', end=' ')
                 continue
-            if temp_point in unsafe_locations: 
-                print('X', end=' ') 
+            # if temp_point in unsafe_locations: 
+                # print('X', end=' ') 
             else: 
                 print('-', end=' ')
         print()
@@ -45,28 +45,21 @@ def display_board():
 # Sets unsafe locations for the given queen
 def set_unsafe_locations(input_queen): 
 
-    for x in range(board_dimensions):  
-        temp_point = Point(x, input_queen.y)
-        unsafe_locations.append(temp_point) 
-    
-    for y in range(board_dimensions): 
-        temp_point = Point(input_queen.x, y) 
-        unsafe_locations.append(temp_point) 
+    for coordinate in range(board_dimensions): 
+        temp_point_one = Point(coordinate, input_queen.y) 
+        temp_point_two = Point(input_queen.x, coordinate) 
+        unsafe_locations.extend([temp_point_one, temp_point_two])
 
-    diagonal_y = input_queen.y - input_queen.x
-
-    for x in range(board_dimensions): 
-        temp_point = Point(x, diagonal_y)
-        if temp_point.x in range(0, board_dimensions) and temp_point.y in range(0, board_dimensions):
-            unsafe_locations.append(temp_point)
-        diagonal_y += 1 
-    
+    diagonal_y = input_queen.y - input_queen.x 
     diagonal_x = input_queen.x + input_queen.y 
-    for y in range(board_dimensions): 
-        temp_point = Point(diagonal_x, y)
-        if temp_point.x in range(0, board_dimensions) and temp_point.y in range(0, board_dimensions):
-            unsafe_locations.append(temp_point)
-        diagonal_x -= 1
+    
+    for coordinate in range(board_dimensions): 
+        temp_point_one = Point(coordinate, diagonal_y)
+        temp_point_two = Point(diagonal_x, coordinate)
+        if temp_point_one.x and temp_point_one.y or temp_point_two.x and temp_point_two.y in range(0, board_dimensions): 
+            unsafe_locations.extend([temp_point_one, temp_point_two])
+        diagonal_x -= 1 
+        diagonal_y += 1
 
 # Marks locations safe in the safe_locations array based on new queen placement
 def set_safe_locations(): 
