@@ -1,11 +1,22 @@
-from dataclasses import dataclass 
-import os 
+# Reproduction of the Eight Queens Algorithm in index.py
+# The intention is to maximize functionality and minimize code 
+# 
+# While the previous program solved a single solution for a given queen. 
+# What if we solved every solution to this problem?
+# 
+# Ideally we can input some queen at point (0, 0),
+# find valid solutions from the given queen. 
+# After we can attempt the following queens as initial positions
+# 
+# Repeat this until all solutions are found 
 
-# Point type declaration
-@dataclass 
+from dataclasses import dataclass
+import os
+
+@dataclass
 class Point: 
-    x: int 
-    y: int 
+    x : int 
+    y : int 
 
 # Variable declaration
 board_dimensions = 8 
@@ -24,21 +35,21 @@ def display_board():
 
     print("  ", end='')
     for i in range(board_dimensions): 
-        print("{0} ".format(i), end = '')
+        print(" {0} ".format(i), end = '')
 
     print() 
 
     for y in range(board_dimensions): 
-        print("\t{0}".format(y), end=' ') 
+        print("\t{0}".format(y), end='  ') 
         for x in range(board_dimensions):
             temp_point = Point(x, y) 
             if temp_point in queen_locations: 
-                print('Q', end=' ')
+                print('Q', end='  ')
                 continue
             # if temp_point in unsafe_locations:    # Debug
                 # print('X', end=' ') 
             else: 
-                print('-', end=' ')
+                print('-', end='  ')
         print()
 
 # Sets unsafe locations for the given queen
@@ -106,43 +117,53 @@ def is_valid():
         raise Exception("Number of queens exceeds the maximum  or minimum number allowed") 
     else: 
         return False
-        
+
 # Main 
-try: 
+def main():
 
-    input_x = int(input("Enter x coordinate: "))
-    input_y = int(input("Enter y coordinate: ")) 
-    initial_queen = Point(input_x, input_y)
+    try:  
 
-    place_queen(initial_queen) 
+        attempts = [] 
 
-    current_place = 0
+        for x in range(1, 9): 
+            for y in range(1, 9): 
+                attempts.append(Point(x, y)) 
 
-    while True: 
-  
-        if current_place > 0:
-            for places in range(current_place):
-                safe_locations.remove(safe_locations[0])
+        for x in range(attempts): 
 
-        while len(safe_locations) > 0: 
-            for locations in safe_locations:
-                if not is_valid(): 
-                    place_queen(locations)
-                else: 
+            print(len(attempts))
+
+            place_queen(attempts[x]) 
+
+            current_place = 0
+
+            while True:   
+                if current_place > 0: 
+                    for places in range(current_place): 
+                        safe_locations.remove(safe_locations[0])
+
+                while len(safe_locations) > 0: 
+                    for locations in safe_locations: 
+                        if not is_valid(): 
+                            place_queen(locations)
+                        else: 
+                            break
+                if is_valid(): 
+                    display_board() 
+                reset_board() 
+                current_place += 1 
+                
+                if current_place > len(safe_locations): 
                     break 
+        exit()
 
-        if is_valid(): 
-            break 
-        reset_board()
-        current_place += 1
+    except Exception as e: 
+        print("Error: {0}".format(e))
 
-    if not is_valid(): 
-        raise Exception("No Solution")
-    else: 
-        print("\nFound Solution:")
-        display_board()
+main()
+ 
 
-except Exception as e: 
-    print("Error: {0}".format(e))
 
-exit()
+
+
+
