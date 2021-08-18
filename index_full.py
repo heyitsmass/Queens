@@ -12,6 +12,7 @@
 
 from dataclasses import dataclass
 import os
+from typing import overload
 
 @dataclass
 class Point: 
@@ -118,22 +119,42 @@ def is_valid():
     else: 
         return False
 
+def overloadFunc(e):
+    return e.x 
+
+def overloadFunc2(e): 
+    return e.y
+
+def purge_locations(locations): 
+    locations.sort(key = overloadFunc)
+    locations.sort(key = overloadFunc2)
+
+    length = len(locations)
+    fresh_array = [] 
+
+    for i in range(length):
+        if locations[i].x > 7 or locations[i].x < 0 or locations[i].y > 7 or locations[i].y < 0: 
+            continue
+        if len(fresh_array) == 0: 
+            fresh_array.append(locations[i])
+        else: 
+            if locations[i] not in fresh_array: 
+                fresh_array.append(locations[i])
+
+    return fresh_array
+
+def position_formatter(new_locations, queen_locations): 
+    
+    # Position format -> 'rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R'
+
 # Main 
 def main():
 
     try:  
 
-        attempts = [] 
+            init_queen = Point(4, 5)
 
-        for x in range(1, 9): 
-            for y in range(1, 9): 
-                attempts.append(Point(x, y)) 
-
-        for x in range(attempts): 
-
-            print(len(attempts))
-
-            place_queen(attempts[x]) 
+            place_queen(init_queen) 
 
             current_place = 0
 
@@ -149,16 +170,21 @@ def main():
                         else: 
                             break
                 if is_valid(): 
-                    display_board() 
+                    display_board()
+                    new_locations = purge_locations(unsafe_locations)
+                    print("Unsafe Locations", new_locations)
+                    print("Queen Locations", queen_locations) 
+                    position = position_formatter(new_locations, queen_locations) 
                 reset_board() 
                 current_place += 1 
                 
                 if current_place > len(safe_locations): 
                     break 
-        exit()
+        #exit()
+
 
     except Exception as e: 
-        print("Error: {0}".format(e))
+            print("Error: {0}".format(e))
 
 main()
  
