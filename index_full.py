@@ -235,22 +235,6 @@ def main():
                         break 
                 except: 
                     break 
-            #with KeyPoller() as keyPoller: 
-               #while True: 
-                #    if current_pos < len(positions): display.start(positions[current_pos])
-                 #   c = keyPoller.poll() 
-                  #  if not c is None: 
-                   #     if c == "c":
-                    #        display.terminate() 
-                     #       break 
-                      #  if c == "a" and current_pos > 0:
-                       #     current_pos -= 1
-                        #if c == "d" and current_pos < len(positions)-1: 
-                        #    current_pos += 1
-                        #print(c)
-
-
-
     except Exception as e: 
             print("Error: {0}".format(e))
 
