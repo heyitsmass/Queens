@@ -10,9 +10,13 @@
 # 
 # Repeat this until all solutions are found 
 
-from dataclasses import dataclass
 import os
+import sys
+import time
+from dataclasses import dataclass
 from typing import overload
+
+import keyboard
 from chessboard import display
 
 
@@ -177,6 +181,8 @@ def main():
 
     positions = []
 
+    #print(os.__file__)
+
     try:  
 
             init_queen = Point(4, 5)
@@ -208,9 +214,42 @@ def main():
                 
                 if current_place > len(safe_locations): 
                     break 
-            
+
+        # Add functionality to scroll through the found positions   
+            current_pos = 0
+
             while True: 
-                display.start(positions[0])
+                display.start(positions[current_pos])
+                try: 
+                    if keyboard.is_pressed('d') and current_pos < len(positions)-1: 
+                        time.sleep(0.1)
+                        current_pos += 1
+                        print("Solution {0} of {1}".format(current_pos+1, len(positions)))
+                    if keyboard.is_pressed('a') and current_pos > 0: 
+                        time.sleep(0.1)
+                        current_pos -= 1 
+                        print("Solution {0} of {1}".format(current_pos+1, len(positions)))
+                    if keyboard.is_pressed('c'): 
+                        time.sleep(0.1)
+                        display.terminate() 
+                        break 
+                except: 
+                    break 
+            #with KeyPoller() as keyPoller: 
+               #while True: 
+                #    if current_pos < len(positions): display.start(positions[current_pos])
+                 #   c = keyPoller.poll() 
+                  #  if not c is None: 
+                   #     if c == "c":
+                    #        display.terminate() 
+                     #       break 
+                      #  if c == "a" and current_pos > 0:
+                       #     current_pos -= 1
+                        #if c == "d" and current_pos < len(positions)-1: 
+                        #    current_pos += 1
+                        #print(c)
+
+
 
     except Exception as e: 
             print("Error: {0}".format(e))
