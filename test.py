@@ -1,6 +1,6 @@
 from chessboard import display
 
-position = 'rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R'
+position = '2Q5/5Q2/3Q4/Q7/7Q/4Q3/6Q1/1Q6/'
 
 while True:
     display.start(position)

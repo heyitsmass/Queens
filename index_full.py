@@ -13,6 +13,8 @@
 from dataclasses import dataclass
 import os
 from typing import overload
+from chessboard import display
+
 
 @dataclass
 class Point: 
@@ -143,12 +145,37 @@ def purge_locations(locations):
 
     return fresh_array
 
-def position_formatter(new_locations, queen_locations): 
+
+def position_formatter(queen_locations): 
     
-    # Position format -> 'rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R'
+    # Position format ex) result 1 from (4, 5) start -> '2Q5/5Q2/3Q4/Q7/7Q/4Q3/6Q1/1Q6'
+    # Sort the new_locations by y level (already done) then traverse the layer, counting the number until a queen is found 
+    queen_locations.sort(key=overloadFunc2)
+
+    full_string = ""
+
+    for locs in queen_locations: 
+        left_side  = locs.x 
+        right_side = (board_dimensions - left_side - 1) 
+        temp_str = "" 
+
+        if left_side > 0 : temp_str += str(left_side) 
+        
+        temp_str += "Q"
+
+        if right_side > 0 : temp_str += str(right_side)
+
+        temp_str += "/" 
+
+        full_string += temp_str 
+    
+    return full_string 
+            
 
 # Main 
 def main():
+
+    positions = []
 
     try:  
 
@@ -171,17 +198,19 @@ def main():
                             break
                 if is_valid(): 
                     display_board()
-                    new_locations = purge_locations(unsafe_locations)
-                    print("Unsafe Locations", new_locations)
-                    print("Queen Locations", queen_locations) 
-                    position = position_formatter(new_locations, queen_locations) 
+                    #new_locations = purge_locations(unsafe_locations)
+                    #print("Unsafe Locations", new_locations)
+                    #print("Queen Locations", queen_locations) 
+                    new_queens = queen_locations.copy()
+                    positions.append(position_formatter(new_queens)) 
                 reset_board() 
                 current_place += 1 
                 
                 if current_place > len(safe_locations): 
                     break 
-        #exit()
-
+            
+            while True: 
+                display.start(positions[0])
 
     except Exception as e: 
             print("Error: {0}".format(e))
