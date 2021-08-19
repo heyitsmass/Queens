@@ -11,7 +11,6 @@
 # Repeat this until all solutions are found 
 
 import os
-import sys
 import time
 from dataclasses import dataclass
 from typing import overload
@@ -235,6 +234,7 @@ def main():
                         break 
                 except: 
                     break 
+
     except Exception as e: 
             print("Error: {0}".format(e))
 
