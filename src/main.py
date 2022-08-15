@@ -1,5 +1,4 @@
 """
-  Algorithm
   When looking at any row i:
     1. If row i contains the row of the initial queen (from the input), go to the next row
     2. Starting from column 0, and a column index j such that when the location for the queen at position
@@ -8,21 +7,7 @@
         same steps on this row, unless row i is the last row where in this case, the solution is found
     4. If no safe locations exist for a queen on row i, go back to row i - 1 and starting from the j column used
         in row i - 1. and the next safe location and then mark the board for the new unsafe locations and go
-        to row i
-
-    for i in range(self.size): 
-      if i == init_queen.row: 
-        i+=1 
-        continue 
-      
-      if 
-      for j in range(self.size): 
-        if (i, j) is safe: 
-          set a queen
-          i+=1 
-          continue 
-
-      
+        to row i      
 """
 
 from dataclasses import dataclass
