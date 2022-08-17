@@ -9,20 +9,6 @@
     4. If no safe locations exist for a queen on row i, go back to row i - 1 and starting from the j column used
         in row i - 1. and the next safe location and then mark the board for the new unsafe locations and go
         to row i
-
-    for i in range(self.size): 
-      if i == init_queen.row: 
-        i+=1 
-        continue 
-      
-      if 
-      for j in range(self.size): 
-        if (i, j) is safe: 
-          set a queen
-          i+=1 
-          continue 
-
-      
 """
 
 from dataclasses import dataclass
@@ -34,7 +20,6 @@ class Point:
   y:int
   queen:bool=False
   safe:bool=True  
-  checked:bool=False
 
   def __repr__(self): 
     if self.queen: 
@@ -61,62 +46,33 @@ class Board:
       self.board.append(row)
 
     self.queen = Point(x, y, True)  
-    self.queens = list()
 
     self.setQueen(x, y) 
 
-
-
-  def _scan(self, board, i=0, j=0, flag=False): 
-    if i == self.queen.x: 
-      return self._scan(board, i+1) 
-
-    if i == self.size: 
-      return True 
-
-    if board[i][j].safe and not board[i][j].checked: 
-      b = deepcopy(board) 
-
-      self.setQueen(i, j)   
-
-      flag = True 
-
-    if j+1 < self.size: 
-      ret = self._scan(board, i, j+1, flag)
-    elif not flag:
-      print("missed check on row", i) 
-      return False 
-
-    return self._scan(board, i+1)  
-
-
-    '''
-      b = deepcopy(board) 
-      self.setQueen(i, j)
-      flag = True 
-      ret = self._scan(board, i+1, flag) 
-      if not ret:
-        if j+1 < self.size: 
-          return self._scan(b, i, flag) 
-
-      return self._scan(board, i+1) 
-
-        #print(i, j+1, b) 
-      #return ret 
-
-    if j+1 < self.size: 
-      tmp = self._scan(board, i, j+1, flag) 
-      return tmp 
-
-
-    if not flag:
-      print("Missed check on row", i, (i-1, j+1)) 
-      return False  
+    if not self.scan(self.board): 
+      print("No Solution")  
     
+    self.display() 
 
-    ret = self._scan(board, i+1) 
-    return ret 
-    '''
+  def scan(self, board:list[list[Point]], i=0, j=0): 
+    
+    if i == self.queen.x: return self.scan(board, i+1) 
+    if i >= self.size: return True 
+
+    if board[i][j].safe: 
+      old = deepcopy(board) 
+      self.setQueen(i, j) 
+
+      if self.scan(self.board, i+1): 
+        return True; 
+      
+      self.board = old 
+    
+    if j+1 < self.size: 
+      return self.scan(self.board, i, j+1) 
+    
+    return False; 
+
 
   def display(self): 
     for i in range(self.size): 
@@ -125,45 +81,32 @@ class Board:
     for i, row in enumerate(self.board):
       for j, point in enumerate(row): 
         print(i if not j else '', point, end='') 
-      print()    
+      print()  
+
 
   def setQueen(self, x:int, y:int): 
     if self.board[x][y].queen or not self.board[x][y].safe: 
       return False 
     self.board[x][y].queen = True 
-    self.queens.append(self.board[x][y])
     return self.setUnsafe(x, y)  
   
-  def setUnsafe(self, x:int, y:int, flag=False): 
+  def setUnsafe(self, x:int, y:int): 
 
     tmp_y = y - x 
     tmp_x = x + y 
 
     for i in range(self.size):
-      self.board[x][i].safe = flag
-      self.board[i][y].safe = flag
+      self.board[x][i].safe = False
+      self.board[i][y].safe = False
 
       if tmp_y + i in range(self.size):       
-        self.board[i][tmp_y+i].safe = flag
+        self.board[i][tmp_y+i].safe = False
 
       if tmp_x - i in range(self.size):  
-        self.board[tmp_x-i][i].safe = flag
+        self.board[tmp_x-i][i].safe = False
 
     return True 
 
-'''
-chessboard = Board(8, 4, 3) 
-
-chessboard.scan(chessboard.board)
-
-chessboard.display()
-'''
-
-tmp_board = Board(8, 4, 3) 
-
-tmp_board._scan(tmp_board.board)
-
-tmp_board.display()
 
 
 
