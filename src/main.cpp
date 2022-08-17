@@ -34,8 +34,8 @@ class Board{
           board.push_back(row); 
         }
 
-        queen = Point(x-1, y-1, true);  
-        setQueen(x-1, y-1); 
+        queen = Point(x, y, true);  
+        setQueen(x, y); 
 
         if(scan(board)) 
           display(); 
