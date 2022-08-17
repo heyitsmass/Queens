@@ -23,24 +23,26 @@ class Board{
   Point queen; 
   public: 
     Board(int x, int y, int s=8){
-      size = s; 
-      
-      for(int i = 0; i < size; i++){ 
-        vector<Point> row; 
-        for(int j = 0; j < size; j++){ 
-          row.push_back(Point(i, j)); 
+      if ((x >= 0 && x < 8)&&(y >= 0 && y < 8)){ 
+        size = s; 
+        
+        for(int i = 0; i < size; i++){ 
+          vector<Point> row; 
+          for(int j = 0; j < size; j++){ 
+            row.push_back(Point(i, j)); 
+          }
+          board.push_back(row); 
         }
-        board.push_back(row); 
-      }
 
-      queen = Point(x, y, true);  
-      setQueen(x, y); 
+        queen = Point(x-1, y-1, true);  
+        setQueen(x-1, y-1); 
 
-      if(scan(board)) 
-        display(); 
-      else 
-        cout << "No Solution" << endl; 
-      
+        if(scan(board)) 
+          display(); 
+        else 
+          cout << "No Solution" << endl; 
+      } else 
+        cout << "Input not within expected range [0, 7]" << endl;  
     } 
     bool scan(vector<vector<Point> > inp_board, int i=0, int j=0){ 
       
@@ -88,11 +90,11 @@ class Board{
 
     void display(){ 
       for(int i = 0; i < size; i++)
-        cout << ((i > 0)? "  " : "   ") << i << " ";
+        cout << ((i > 0)? "  " : "   ") << i+1 << " ";
       cout << endl; 
       for(int i =0; i < size; i++){ 
         for(int j =0; j < size; j++){ 
-          if(!j) cout << i << " "; 
+          if(!j) cout << i+1 << " "; 
           cout << board[i][j].repr() << ' '; 
         }
         cout << endl; 
@@ -102,7 +104,7 @@ class Board{
 
 int main(int argv, char** argc){ 
 
-  Board chessboard(0, 0); 
+  Board chessboard(2, 3); 
 
   return 0; 
 }
