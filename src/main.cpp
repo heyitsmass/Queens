@@ -1,110 +1,127 @@
 #include <iostream> 
-#include <vector> 
+#include <vector>  
 
-using namespace std; 
+using namespace std;
 
 struct Point{ 
   public:  
     int x, y; 
-    bool queen, safe;
-    Point(int i, int j, bool q = false, bool s = true): x(i), y(j), queen(q), safe(s) {};
-    Point(): x(0), y(0), queen(false), safe(true) {}; 
-    std::string repr() const{ 
-      if(queen) return " Q "; 
-      if(!safe) return " X "; 
+    bool is_queen, is_safe;
+    Point(int x, int y, bool is_queen=false, bool is_safe=true): x(x), y(y), is_queen(is_queen), is_safe(is_safe){}; 
+    Point(){}; 
+    std::string str() const{ 
+      if(is_queen) return " Q "; 
+      if(!is_safe) return " X "; 
       return " * "; 
     }
 };
 
-class Board{ 
-
-  int size; 
-  vector<vector<Point> > board;  
-  Point queen; 
+class Board{  
   public: 
-    Board(int x, int y, int s=8){
-      if ((x >= 0 && x < 8)&&(y >= 0 && y < 8)){ 
-        size = s; 
-        
-        for(int i = 0; i < size; i++){ 
-          vector<Point> row; 
-          for(int j = 0; j < size; j++){ 
-            row.push_back(Point(i, j)); 
-          }
-          board.push_back(row); 
-        }
 
-        queen = Point(x, y, true);  
-        setQueen(x, y); 
-
-        if(scan(board)) 
-          display(); 
-        else 
-          cout << "No Solution" << endl; 
-      } else 
-        cout << "Input not within expected range [0, 7]" << endl;  
-    } 
-    bool scan(vector<vector<Point> > inp_board, int i=0, int j=0){ 
+    Board(int x, int y, int size=8){ 
+      if(1 > x && y and x && y >= size+1)
+        throw exception();  
       
-      if(i==queen.x) return scan(inp_board, i+1); 
-      if(i>=size) return true;
+      --x;      //normalize x
+      --y;      //normalize y 
 
-      if(inp_board[i][j].safe){
-        auto old = inp_board;  
-        setQueen(i, j);           //set queen sets a queen on the board contained within the class
+      this -> size = size; 
+      
+      /* Initialize the board */ 
+      for(int i = 0; i < this->size; ++i){ 
+        vector<Point> row; 
+        for(int j = 0; j < this->size; ++j) 
+          row.push_back(Point(i, j)); 
+        chessboard.push_back(row);  
+      } 
 
-        if(scan(board, i+1))      //we pass the class's board  instead of inp_board for that reason 
-          return true; 
-        
-        board = old;              //then reset the board 
+      /* create the source queen */ 
+      source_queen = Point(x, y, true, false); 
+
+      /* set the queen on the board */ 
+      setQueen(x, y); 
+
+      /* perform the scan */ 
+      if(!scan(chessboard))
+        cout << "No Solution (x=" << x << ", y=" << y << ')' << endl; 
+      else
+        cout << "Solution for point (x=" << x << ", y=" << y << ')' << endl; 
+        display(); 
+    }
+
+    bool scan(vector<vector<Point> > const& board, int i=0, int j=0){ 
+      if(i==source_queen.x) return scan(board, i+1);                    //skip the queen row
+      if(i>=size) return true;                                          //if i >= size then a queen has been placed on every row
+
+
+      if(board[i][j].is_safe){                                          //verify the space is free
+        auto old = board;                                               //store a copy of the current board 
+        setQueen(i, j);                                                 //attempt a queen set
+
+        if(scan(chessboard, i+1))                                       //recursively check the next line until a return condition is met
+          return true;                                                  //return true if the check succeeded
+
+        chessboard = old;                                               //reset the board to the board prior to queen set and continue 
+  
       }
 
-      if(j+1<size)
-        return scan(board, i, j+1);
-       
-      return false; 
-    }
-    bool setQueen(int x, int y){ 
-      if (board[x][y].queen || !board[x][y].safe)
-        return false;  
-      board[x][y].queen = true; 
-      return setUnsafe(x, y);  
-    }
-    bool setUnsafe(int x, int y){ 
-      int tmp_y = y-x; 
-      int tmp_x = x+y; 
+      if(j+1<size)  
+        return scan(chessboard, i, j+1);                                //check the next point in the row 
+      
+      return false;                                                     //if we cannot find a free space in the row, return false 
+    } 
 
-      for(int i = 0; i < size; i++){ 
-        board[x][i].safe = false; 
-        board[i][y].safe = false; 
-
-        if(tmp_y+i >= 0 && tmp_y+i < 8)
-          board[i][tmp_y+i].safe = false; 
-        
-        if(tmp_x-i >= 0 && tmp_x-i < 8)
-          board[tmp_x-i][i].safe = false; 
-
-      }
-      return true; 
-    }
 
     void display(){ 
-      for(int i = 0; i < size; i++)
-        cout << ((i > 0)? "  " : "   ") << i+1 << " ";
+      for(int i = 0; i < size; ++i)                                     //output numbers for top row
+        cout << ((!i)? "   " : "  ") << i+1 << " "; 
       cout << endl; 
-      for(int i =0; i < size; i++){ 
-        for(int j =0; j < size; j++){ 
-          if(!j) cout << i+1 << " "; 
-          cout << board[i][j].repr() << ' '; 
+      
+      for(int i = 0; i < size; ++i){
+        for(int j = 0; j < size; ++j){ 
+          if(!j) cout << i+1 << ' '; 
+          cout << chessboard[i][j].str() << ' '; 
         }
         cout << endl; 
       }
     }
-}; 
 
-int main(int argv, char** argc){ 
+    void setQueen(int x, int y){ 
+      
+      chessboard[x][y].is_queen = true;  
 
-  Board chessboard(2, 3); 
+      /* Mark unsafe locations for the queen */ 
 
+      int tl = y-x;         //top left 
+      int tr = x+y;         //top right 
+
+      for(int i = 0; i < size; ++i){ 
+        chessboard[x][i].is_safe = false;       //left to right 
+        chessboard[i][y].is_safe = false;       //top to bottom
+        
+        if(0 <= tr-i && tr-i < size)            //top right to bottom left
+          chessboard[tr-i][i].is_safe = false; 
+
+        if(0 <= tl+i && tl+i < size)            //top left to bottom right 
+          chessboard[i][tl+i].is_safe = false; 
+      }
+    }
+
+    int size;       
+    std::vector<std::vector<Point> > chessboard; 
+    Point source_queen; 
+};
+
+int main(int argv, char** argc){  
+
+  /* Output the solution (if available) for every position */ 
+
+  for(int i = 1; i < 9; i++){ 
+    for(int j = 1; j < 9; j++){ 
+      Board(i, j);  
+    }
+  }
+ 
   return 0; 
-}
+} 
