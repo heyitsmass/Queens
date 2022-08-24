@@ -10,10 +10,4 @@ board.scan(2, 3)
 
 board.display()  
 
-print(board.fen)  
-
-
-
-
-
-
+print(board.fen)
