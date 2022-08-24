@@ -35,3 +35,4 @@
 *.backup
 backup
 .vscode 
+__pycache__
