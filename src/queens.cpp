@@ -47,16 +47,9 @@ Board::Board(int x, int y, int size=8){
   /* perform the scan */ 
   scan(cb); 
 
+  /* emplace a queen */ 
   queens.emplace(queens.end()-queen.x, queen);
 
-  display();
-  /*
-  if(!scan(cb))
-    std::cout << "No Solution (x=" << x+1 << ", y=" << y+1 << ')' << std::endl; 
-  else
-    std::cout << "Solution for point (x=" << x+1 << ", y=" << y+1 << ')' << std::endl; 
-    display(); 
-  */ 
 }
 
 bool Board::scan(std::vector<std::vector<Point> > const& b, int x, int y){ 
@@ -88,7 +81,7 @@ void Board::display(){
   
   for(int x = 0; x < size; ++x){                         //output each point on the board 
     for(int y = 0; y < size; ++y){ 
-      if(!y) std::cout << x+1 << ' '; 
+      if(!y)std::cout << x+1 << ' ';
       std::cout << cb[x][y].str() << ' '; 
     }
     std::cout << std::endl; 
@@ -126,7 +119,7 @@ inline int Board::getSize() const noexcept{
 }
 
 char* Board::fen(){
-  std::string r;
+  std::string r = "";
   for(int i = size-1; i >= 0; --i){ 
     std::string tmp = ""; 
     if(queens[i].y >= 1){ 
@@ -140,11 +133,9 @@ char* Board::fen(){
   }
   char* ret = new char[r.length()];  
   for(int i =0; i < r.length(); ++i) 
-    ret[i] = r[i]; 
-
+    ret[i] = r[i];
   return ret;  
 }
-
 
 
 extern "C"{ 
