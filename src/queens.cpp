@@ -42,11 +42,14 @@ Board::Board(int x, int y, int size=8){
   queen = Point(x, y, true, false); 
 
   /* set the queen on the board */ 
-  set(x, y); 
+  set(x, y);
 
   /* perform the scan */ 
   scan(cb); 
 
+  queens.emplace(queens.end()-queen.x, queen);
+
+  display();
   /*
   if(!scan(cb))
     std::cout << "No Solution (x=" << x+1 << ", y=" << y+1 << ')' << std::endl; 
@@ -64,9 +67,11 @@ bool Board::scan(std::vector<std::vector<Point> > const& b, int x, int y){
     auto o = b;                                          //store a copy of the current board 
     set(x, y);                                           //attempt a queen set
 
-    if(scan(cb, x+1))                                    //recursively check the next line until a return condition is met
+    if(scan(cb, x+1)){                                   //recursively check the next line until a return condition is met
+      if(cb[x][y].queen && x < size)
+        queens.push_back(cb[x][y]);
       return true;                                       //return true if the check succeeded
-
+    }
     cb = o;                                              //reset the board to the board prior to queen set and continue 
   }
 
@@ -120,6 +125,26 @@ inline int Board::getSize() const noexcept{
   return size; 
 }
 
+char* Board::fen(){
+  std::string r;
+  for(int i = size-1; i >= 0; --i){ 
+    std::string tmp = ""; 
+    if(queens[i].y >= 1){ 
+      tmp += std::to_string(queens[i].y) + 'Q'; 
+      if (((size - queens[i].y)-1) > 0)
+        tmp += std::to_string(size - queens[i].y - 1); 
+    } else
+      tmp += 'Q' + std::to_string(size-queens[i].y - 1); 
+    if(i-1 >= 0) tmp += '/';
+    r += tmp; 
+  }
+  char* ret = new char[r.length()];  
+  for(int i =0; i < r.length(); ++i) 
+    ret[i] = r[i]; 
+
+  return ret;  
+}
+
 
 
 extern "C"{ 
@@ -127,26 +152,7 @@ extern "C"{
 
   void display_board(Board* b){b -> display();}
 
-  /* Needs refactor */ 
-
-  char* fen_formatter(Board* b){ 
-    auto tmp = b -> getBoard(); 
-    std::string ret = ""; 
-    for(int i =0; i < b -> getSize(); ++i){ 
-      int k = 0; 
-      for(int j = 0; j < b -> getSize(); ++j){ 
-        if(tmp[i][j].queen){ 
-          if(k) ret += std::to_string(k) + 'Q'; 
-          else ret += 'Q';  
-          k = 0; 
-        } else k += 1;
-      }
-      if(k) ret += std::to_string(k); 
-      if(i+1 < b -> getSize()) ret += '/'; 
-    }
-    char* r = new char[ret.length()];  
-    for(int i =0; i < ret.length(); ++i)
-      r[i] = ret[i];  
-    return r; 
+  char* fen_formatter(Board* b){
+    return b -> fen(); 
   }
 }
