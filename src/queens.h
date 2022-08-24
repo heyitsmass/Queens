@@ -20,9 +20,11 @@ class Board{
     char* formatter(); 
     inline std::vector<std::vector<Point> > getBoard() const; 
     inline int getSize() const noexcept; 
+    char* fen(); 
   private: 
     void set(int, int);
     int size;    
     std::vector<std::vector<Point> > cb;  //chessboard 
     Point queen;   
+    std::vector<Point> queens; 
 };    
