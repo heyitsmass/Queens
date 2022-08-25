@@ -24,15 +24,17 @@ chessboard.display()
 
 '''Output: 
 
-     1   2   3   4   5   6   7   8 
-  1  Q   X   X   X   X   X   X   X  
-  2  X   X   X   X   X   X   Q   X  
-  3  X   X   X   Q   X   X   X   X  
-  4  X   X   X   X   X   Q   X   X  
-  5  X   X   X   X   X   X   X   Q  
-  6  X   Q   X   X   X   X   X   X  
-  7  X   X   X   X   Q   X   X   X  
-  8  X   X   Q   X   X   X   X   X  
+   1   2   3   4   5   6   7   8 
+1  Q   X   X   X   X   X   X   X  
+2  X   X   X   X   X   X   Q   X  
+3  X   X   X   Q   X   X   X   X  
+4  X   X   X   X   X   Q   X   X  
+5  X   X   X   X   X   X   X   Q  
+6  X   Q   X   X   X   X   X   X  
+7  X   X   X   X   Q   X   X   X  
+8  X   X   Q   X   X   X   X   X  
+  
+timed execution: 0.03s user 0.03s system 52% cpu 0.101 total
   
 '''
 
@@ -63,11 +65,52 @@ chessboard.display()
 14  X   X   X   X   X   X   X   X   X   X   Q   X   X   X   X  
 15  X   X   X   X   X   X   X   Q   X   X   X   X   X   X   X  
 
+timed execution: 0.04s user 0.03s system 61% cpu 0.113 total
+
 '''
 
 print(chessboard.fen) 
 
 #>>> Q14/2Q12/4Q10/1Q13/9Q5/11Q3/13Q1/3Q11/12Q2/8Q6/5Q9/14Q/6Q8/10Q4/7Q7
+
+chessboard.scan(6, 7, size=25) 
+
+'''Output: 
+
+    1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25 
+1   Q   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X  
+2   X   X   X   Q   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X  
+3   X   Q   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X  
+4   X   X   X   X   X   X   X   Q   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X  
+5   X   X   Q   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X  
+6   X   X   X   X   X   X   Q   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X  
+7   X   X   X   X   X   X   X   X   X   Q   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X  
+8   X   X   X   X   X   X   X   X   X   X   X   X   Q   X   X   X   X   X   X   X   X   X   X   X   X  
+9   X   X   X   X   X   X   X   X   X   X   X   X   X   X   Q   X   X   X   X   X   X   X   X   X   X  
+10  X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   Q   X   X   X   X   X  
+11  X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   Q   X  
+12  X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   Q   X   X   X   X  
+13  X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   Q  
+14  X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   Q   X   X   X  
+15  X   X   X   X   Q   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X  
+16  X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   Q   X   X  
+17  X   X   X   X   X   X   X   X   X   X   X   X   X   Q   X   X   X   X   X   X   X   X   X   X   X  
+18  X   X   X   X   X   X   X   X   Q   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X  
+19  X   X   X   X   X   Q   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X  
+20  X   X   X   X   X   X   X   X   X   X   X   Q   X   X   X   X   X   X   X   X   X   X   X   X   X  
+21  X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   Q   X   X   X   X   X   X   X   X   X  
+22  X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   Q   X   X   X   X   X   X   X  
+23  X   X   X   X   X   X   X   X   X   X   Q   X   X   X   X   X   X   X   X   X   X   X   X   X   X  
+24  X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   Q   X   X   X   X   X   X   X   X  
+25  X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   X   Q   X   X   X   X   X   X
+
+timed execution: 4.19s user 0.04s system 99% cpu 4.258 total
+
+'''
+
+print(chessboard.fen) 
+
+#>>> Q24/3Q21/1Q23/7Q17/2Q22/6Q18/9Q15/12Q12/14Q10/19Q5/23Q1/20Q4/24Q/21Q3/4Q20/22Q2/13Q11/8Q16/5Q19/11Q13/15Q9/17Q7/10Q14/16Q8/18Q6
 ```
 
 ### Algorithm 
