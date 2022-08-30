@@ -123,11 +123,8 @@ bool Board::scan(std::vector<std::vector<Point> > const& b, int x, int y){
     auto o = b;                                          //store a copy of the current board 
     set(x, y);                                           //attempt a queen set
 
-    if(scan(cb, x+1)){                                   //recursively check the next line until a return condition is met
-      if(cb[x][y].queen && x < size)
-        queens.push_back(cb[x][y]);
+    if(scan(cb, x+1))                                    //recursively check the next line until a return condition is met
       return true;                                       //return true if the check succeeded
-    }
     cb = o;                                              //reset the board to the board prior to queen set and continue 
   }
 
