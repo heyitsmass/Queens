@@ -115,7 +115,7 @@ print(chessboard.fen)
 
 ### Algorithm 
 ```cpp
-bool Board::scan(std::vector<std::vector<Point> > const& b, int x, int y){ 
+bool Board::scan(std::vector<std::vector<Point> > const& b, int x=0, int y=0){ 
   if(x==queen.x) return scan(b, x+1);                    //skip the queen row
   if(x>=size) return true;                               //if i >= size then a queen has been placed on every row
 
