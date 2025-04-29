@@ -1,4 +1,4 @@
-# Eight-Queens
+# Queens
 
 Produces a *valid* FEN sequence for a chessboard of nxn size with n number of queens such that no queen is attacking another. 
 
